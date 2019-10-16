@@ -8,6 +8,7 @@ Figures are considered connected if the touch each other on the full side (diago
 
 """
 import re
+import pytest
 
 VALIDATE_RX = re.compile(r'^[\s*X*]+$')
 
@@ -68,6 +69,24 @@ def figures(lines):
 
 if __name__ == '__main__':
     assert figures([
+        ' X '
+    ]) == 1
+    assert figures([' X  ',
+                    '  X ']) == 2
+    assert figures([
+        ' XX '
+    ]) == 0
+    assert figures([' XX ',
+                    ' XX ']) == 0
+    assert figures([' X ',
+                    ' X ']) == 0
+    assert figures(['', '']) == 0
+    assert figures(['']) == 0
+    with pytest.raises(ValueError):
+        assert figures(['a'])
+    assert figures([]) == 0
+    # predefined cases:
+    assert figures([
         '          ',
         '          '
     ]) == 0
@@ -81,18 +100,4 @@ if __name__ == '__main__':
         '     X   XXX        ',
         '    XX   XXX  XXX   '
     ]) == 3
-    assert figures([
-                    ' XX '
-                    ]) == 0
-    assert figures([
-                    ' X '
-                    ]) == 1
-
-    assert figures([' X ',
-                    ' X ']) == 0
-    assert figures([' X  ',
-                    '  X ']) == 2
-    assert figures(['', '']) == 0
-    assert figures(['']) == 0
-
 
